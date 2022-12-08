@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BankRepository extends JpaRepository<Account, String>, JpaSpecificationExecutor<Account> {
+public interface AccountRepository extends JpaRepository<Account, String>, JpaSpecificationExecutor<Account> {
     public Account findAccountByCustomerPhone(String phoneNumber);
 }
