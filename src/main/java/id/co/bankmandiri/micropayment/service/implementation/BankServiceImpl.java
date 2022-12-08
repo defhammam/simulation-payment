@@ -1,6 +1,6 @@
 package id.co.bankmandiri.micropayment.service.implementation;
 
-import id.co.bankmandiri.micropayment.entity.Bank;
+import id.co.bankmandiri.micropayment.entity.Account;
 import id.co.bankmandiri.micropayment.repository.BankRepository;
 import id.co.bankmandiri.micropayment.service.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,24 +20,24 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public Bank save(Bank bank) {
-        return bankRepository.save(this.validateDeletedStatus(bank));
+    public Account save(Account account) {
+        return bankRepository.save(this.validateDeletedStatus(account));
     }
 
     @Override
-    public List<Bank> saveBulk(List<Bank> banks) {
-        List<Bank> bankList = new ArrayList<>();
-        banks.forEach(bank -> bankList.add(this.validateDeletedStatus(bank)));
-        return bankRepository.saveAll(bankList);
+    public List<Account> saveBulk(List<Account> accounts) {
+        List<Account> accountList = new ArrayList<>();
+        accounts.forEach(bank -> accountList.add(this.validateDeletedStatus(bank)));
+        return bankRepository.saveAll(accountList);
     }
 
     @Override
-    public List<Bank> getAll() {
+    public List<Account> getAll() {
         return bankRepository.findAll();
     }
 
     @Override
-    public Bank getById(String id) {
+    public Account getById(String id) {
         if (bankRepository.findById(id).isEmpty()) {
             throw new NoSuchElementException();
         }
@@ -45,16 +45,23 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public Bank removeById(String id) {
-        Bank bankToRemove = this.getById(id);
-        bankToRemove.setIsDeleted(true);
-        return bankToRemove;
+    public Account softRemoveById(String id) {
+        Account accountToRemove = this.getById(id);
+        accountToRemove.setIsDeleted(true);
+        return accountToRemove;
     }
 
-    private Bank validateDeletedStatus(Bank bank) {
-        if (bank.getIsDeleted() == null) {
-            bank.setIsDeleted(false);
+    @Override
+    public Integer debit(String phoneOfCustomer, Integer amountToReduce) {
+        Account foundAccount = bankRepository.findAccountByCustomerPhone(phoneOfCustomer);
+        foundAccount.setBalance(foundAccount.getBalance() - amountToReduce);
+        return bankRepository.save(foundAccount).getBalance();
+    }
+
+    private Account validateDeletedStatus(Account account) {
+        if (account.getIsDeleted() == null) {
+            account.setIsDeleted(false);
         }
-        return bank;
+        return account;
     }
 }

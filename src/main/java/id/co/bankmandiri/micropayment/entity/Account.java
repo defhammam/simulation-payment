@@ -14,14 +14,17 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Bank {
+public class Account {
     @Id
     @GeneratedValue(generator="mandiri-uuid")
     @GenericGenerator(name="mandiri-uuid", strategy="uuid2")
     private String id;
 
     @Column(nullable=false)
-    private String name;
+    private String customerPhone;
+
+    @Column(nullable=false)
+    private Integer balance;
 
     @Column(nullable=false)
     private Boolean isDeleted;
