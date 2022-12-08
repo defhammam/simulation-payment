@@ -20,6 +20,20 @@ public class PaymentSpecification {
                 );
                 predicates.add(betweenPredicate);
             }
+            if (paymentSearchDto.getBeginDate() != null) {
+                Predicate fromPredicate = criteriaBuilder.greaterThanOrEqualTo(
+                        root.get("paymentDate"),
+                        paymentSearchDto.getBeginDate()
+                );
+                predicates.add(fromPredicate);
+            }
+            if (paymentSearchDto.getEndDate() != null) {
+                Predicate untilPredicate = criteriaBuilder.lessThanOrEqualTo(
+                        root.get("paymentDate"),
+                        paymentSearchDto.getEndDate()
+                );
+                predicates.add(untilPredicate);
+            }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         });
     }

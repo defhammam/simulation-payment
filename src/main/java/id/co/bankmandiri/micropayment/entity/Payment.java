@@ -14,6 +14,7 @@ public class Payment {
     @GenericGenerator(name="mandiri-uuid", strategy="uuid2")
     private String id;
     private Long paymentDate;
+    private Integer amountPaid;
     @ManyToOne
     @JoinColumn(name="account_id")
     private Account account;

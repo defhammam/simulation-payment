@@ -1,5 +1,6 @@
 package id.co.bankmandiri.micropayment.service.implementation;
 
+import id.co.bankmandiri.micropayment.dto.PaymentResponseDto;
 import id.co.bankmandiri.micropayment.dto.PaymentSearchDto;
 import id.co.bankmandiri.micropayment.entity.Account;
 import id.co.bankmandiri.micropayment.entity.Payment;
@@ -14,6 +15,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.NoSuchElementException;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
@@ -33,12 +35,27 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    public PaymentResponseDto getById(String id) {
+        if (paymentRepository.findById(id).isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        Payment foundPayment = paymentRepository.findById(id).get();
+        return new PaymentResponseDto(
+                foundPayment.getId(),
+                foundPayment.getPaymentDate(),
+                foundPayment.getAmountPaid(),
+                foundPayment.getAccount().getCustomerPhone()
+        );
+    }
+
+    @Override
     @Transactional
     public Integer debit(String phoneOfCustomer, Integer amountToReduce) {
         Payment payment = new Payment();
         Account foundAccount = accountRepository.findAccountByCustomerPhone(phoneOfCustomer);
         payment.setPaymentDate(System.currentTimeMillis());
         foundAccount.setBalance(foundAccount.getBalance() - amountToReduce);
+        payment.setAmountPaid(amountToReduce);
         payment.setAccount(foundAccount);
         paymentRepository.save(payment);
         return accountRepository.save(foundAccount).getBalance();

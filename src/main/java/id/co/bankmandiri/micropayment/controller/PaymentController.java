@@ -1,23 +1,41 @@
 package id.co.bankmandiri.micropayment.controller;
 
 import id.co.bankmandiri.micropayment.constant.DefaultParameter;
+import id.co.bankmandiri.micropayment.constant.ResponseMessage;
+import id.co.bankmandiri.micropayment.dto.PaymentResponseDto;
 import id.co.bankmandiri.micropayment.dto.PaymentSearchDto;
 import id.co.bankmandiri.micropayment.entity.Payment;
 import id.co.bankmandiri.micropayment.service.PaymentService;
+import id.co.bankmandiri.micropayment.utils.CustomResponse;
 import id.co.bankmandiri.micropayment.utils.PageResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/payment")
+@RequestMapping("/payments")
 public class PaymentController {
     PaymentService paymentService;
 
     @Autowired
     public PaymentController(PaymentService paymentService) {
         this.paymentService = paymentService;
+    }
+
+    @GetMapping("/{idOfPayment}")
+    public ResponseEntity<CustomResponse<PaymentResponseDto>> getPaymentById(@PathVariable String idOfPayment) {
+        CustomResponse<PaymentResponseDto> customResponse = new CustomResponse<>();
+        customResponse.setData(paymentService.getById(idOfPayment));
+        customResponse.setMessage(String.format(
+                ResponseMessage.GET_SINGLE_SUCCESS, "payment", idOfPayment
+        ));
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(customResponse);
     }
 
     @GetMapping("/page")
