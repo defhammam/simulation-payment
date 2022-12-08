@@ -11,4 +11,5 @@ public interface BankService {
     Account getById(String id);
     Account softRemoveById(String id);
     Integer debit(String phoneOfCustomer, Integer amountToReduce);
+    Integer topUpByPhone(String phoneOfCustomer, Integer amountToAdd);
 }

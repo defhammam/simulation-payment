@@ -25,7 +25,7 @@ public class BankController {
     }
 
     @PostMapping
-    public ResponseEntity<CustomResponse<Account>> addBank(@RequestBody Account newAccount) {
+    public ResponseEntity<CustomResponse<Account>> addAccount(@RequestBody Account newAccount) {
         CustomResponse<Account> customResponse = new CustomResponse<>();
         customResponse.setData(bankService.save(newAccount));
         customResponse.setMessage(String.format(
@@ -36,11 +36,11 @@ public class BankController {
                 .body(customResponse);
     }
     @PostMapping("/bulk")
-    public ResponseEntity<CustomResponse<List<Account>>> addBulkBanks(@RequestBody List<Account> banksToAdd) {
+    public ResponseEntity<CustomResponse<List<Account>>> addBulkAccounts(@RequestBody List<Account> accountsToAdd) {
         CustomResponse<List<Account>> customResponse = new CustomResponse<>();
-        customResponse.setData(bankService.saveBulk(banksToAdd));
+        customResponse.setData(bankService.saveBulk(accountsToAdd));
         customResponse.setMessage(String.format(
-                ResponseMessage.ADD_BULK_SUCCESS, banksToAdd.size(), Noun.BANKS
+                ResponseMessage.ADD_BULK_SUCCESS, accountsToAdd.size(), Noun.BANKS
         ));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -48,7 +48,7 @@ public class BankController {
     }
 
     @GetMapping
-    public ResponseEntity<CustomResponse<List<Account>>> getAllBanks() {
+    public ResponseEntity<CustomResponse<List<Account>>> getAllAccounts() {
         CustomResponse<List<Account>> customResponse = new CustomResponse<>();
         customResponse.setData(bankService.getAll());
         customResponse.setMessage(String.format(
@@ -59,12 +59,12 @@ public class BankController {
                 .body(customResponse);
     }
 
-    @GetMapping("/{idOfBank}")
-    public ResponseEntity<CustomResponse<Account>> findBankById(@PathVariable String idOfBank) {
+    @GetMapping("/{idOfAccount}")
+    public ResponseEntity<CustomResponse<Account>> findAccountById(@PathVariable String idOfAccount) {
         CustomResponse<Account> customResponse = new CustomResponse<>();
-        customResponse.setData(bankService.getById(idOfBank));
+        customResponse.setData(bankService.getById(idOfAccount));
         customResponse.setMessage(String.format(
-                ResponseMessage.GET_SINGLE_SUCCESS, Noun.BANK, idOfBank
+                ResponseMessage.GET_SINGLE_SUCCESS, Noun.BANK, idOfAccount
         ));
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -72,7 +72,7 @@ public class BankController {
     }
 
     @PutMapping
-    public ResponseEntity<CustomResponse<Account>> updateBank(@RequestBody Account accountToUpdate) {
+    public ResponseEntity<CustomResponse<Account>> updateAccount(@RequestBody Account accountToUpdate) {
         CustomResponse<Account> customResponse = new CustomResponse<>();
         customResponse.setData(bankService.save(accountToUpdate));
         customResponse.setMessage(String.format(
@@ -83,10 +83,10 @@ public class BankController {
                 .body(customResponse);
     }
 
-    @DeleteMapping("/{idOfBank}")
-    public ResponseEntity<CustomResponse<Account>> removeBankById(@PathVariable String idOfBank) {
+    @DeleteMapping("/{idOfAccount}")
+    public ResponseEntity<CustomResponse<Account>> removeAccountById(@PathVariable String idOfAccount) {
         CustomResponse<Account> customResponse = new CustomResponse<>();
-        customResponse.setData(bankService.softRemoveById(idOfBank));
+        customResponse.setData(bankService.softRemoveById(idOfAccount));
         customResponse.setMessage(String.format(
                 ResponseMessage.DELETE_SINGLE_SUCCESS, Noun.BANK
         ));
@@ -98,5 +98,10 @@ public class BankController {
     @PostMapping("/debit")
     public Integer addDebit(@RequestParam String phone, @RequestParam Integer amount) {
         return bankService.debit(phone, amount);
+    }
+
+    @PostMapping("/top-up")
+    public Integer topUpByPhoneNumber(@RequestParam String phone, @RequestParam Integer amount) {
+        return bankService.topUpByPhone(phone, amount);
     }
 }

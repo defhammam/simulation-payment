@@ -48,13 +48,20 @@ public class BankServiceImpl implements BankService {
     public Account softRemoveById(String id) {
         Account accountToRemove = this.getById(id);
         accountToRemove.setIsDeleted(true);
-        return accountToRemove;
+        return bankRepository.save(accountToRemove);
     }
 
     @Override
     public Integer debit(String phoneOfCustomer, Integer amountToReduce) {
         Account foundAccount = bankRepository.findAccountByCustomerPhone(phoneOfCustomer);
         foundAccount.setBalance(foundAccount.getBalance() - amountToReduce);
+        return bankRepository.save(foundAccount).getBalance();
+    }
+
+    @Override
+    public Integer topUpByPhone(String phoneOfCustomer, Integer amountToAdd) {
+        Account foundAccount = bankRepository.findAccountByCustomerPhone(phoneOfCustomer);
+        foundAccount.setBalance(foundAccount.getBalance() + amountToAdd);
         return bankRepository.save(foundAccount).getBalance();
     }
 
