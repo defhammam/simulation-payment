@@ -166,7 +166,7 @@ Response :
   "message": "Payment debit successful.",
   "data": {
     "idPayment": "string",
-    "paymentDate": "165235320423",
+    "paymentDate": 165235320423,
     "amountPaid": 969696,
     "phoneNumber": "089696969696"
   }

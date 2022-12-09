@@ -3,6 +3,7 @@ package id.co.bankmandiri.micropayment.controller;
 import id.co.bankmandiri.micropayment.constant.Noun;
 import id.co.bankmandiri.micropayment.constant.ResponseMessage;
 import id.co.bankmandiri.micropayment.constant.UrlPath;
+import id.co.bankmandiri.micropayment.dto.AccountResponseDto;
 import id.co.bankmandiri.micropayment.entity.Account;
 import id.co.bankmandiri.micropayment.service.AccountService;
 import id.co.bankmandiri.micropayment.utils.CustomResponse;
@@ -35,6 +36,12 @@ public class AccountController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(customResponse);
     }
+
+    @PostMapping
+    public AccountResponseDto addAccountByPhone(@RequestParam String customerPhone) {
+        return accountService.saveByPhone(customerPhone);
+    }
+
     @PostMapping("/bulk")
     public ResponseEntity<CustomResponse<List<Account>>> addBulkAccounts(@RequestBody List<Account> accountsToAdd) {
         CustomResponse<List<Account>> customResponse = new CustomResponse<>();

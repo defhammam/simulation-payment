@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, String>, JpaSpecificationExecutor<Account> {
-    public Account findAccountByCustomerPhone(String phoneNumber);
+    Account findAccountByCustomerPhone(String phoneNumber);
 }

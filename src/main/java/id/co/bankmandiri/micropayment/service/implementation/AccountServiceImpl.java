@@ -1,8 +1,11 @@
 package id.co.bankmandiri.micropayment.service.implementation;
 
+import id.co.bankmandiri.micropayment.constant.ResponseMessage;
+import id.co.bankmandiri.micropayment.dto.AccountResponseDto;
 import id.co.bankmandiri.micropayment.entity.Account;
 import id.co.bankmandiri.micropayment.repository.AccountRepository;
 import id.co.bankmandiri.micropayment.service.AccountService;
+import id.co.bankmandiri.micropayment.utils.exception.AccountExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,22 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account save(Account account) {
         return accountRepository.save(this.validateDeletedStatus(account));
+    }
+
+    @Override
+    public AccountResponseDto saveByPhone(String phone) {
+        Account accountToSearch = accountRepository.findAccountByCustomerPhone(phone);
+        if (accountToSearch != null) {
+            throw new AccountExistsException(ResponseMessage.ACCOUNT_EXISTS_ERROR);
+        }
+        Account accountToSave = new Account();
+        accountToSave.setCustomerPhone(phone);
+        accountToSave.setBalance(100_000);
+        accountRepository.save(this.validateDeletedStatus(accountToSave));
+        return new AccountResponseDto(
+                accountToSave.getCustomerPhone(),
+                accountToSave.getBalance()
+        );
     }
 
     @Override
