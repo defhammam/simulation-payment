@@ -3,6 +3,7 @@ package id.co.bankmandiri.micropayment.controller;
 import id.co.bankmandiri.micropayment.constant.DefaultParameter;
 import id.co.bankmandiri.micropayment.constant.Noun;
 import id.co.bankmandiri.micropayment.constant.ResponseMessage;
+import id.co.bankmandiri.micropayment.constant.UrlPath;
 import id.co.bankmandiri.micropayment.dto.PaymentRequestDto;
 import id.co.bankmandiri.micropayment.dto.DebitResponseDto;
 import id.co.bankmandiri.micropayment.dto.PaymentSearchDto;
@@ -19,7 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/payments")
+@RequestMapping(UrlPath.TRX_PAYMENT)
 public class PaymentController {
     PaymentService paymentService;
 
@@ -33,7 +34,7 @@ public class PaymentController {
         CustomResponse<DebitResponseDto> customResponse = new CustomResponse<>();
         customResponse.setData(paymentService.getById(idOfPayment));
         customResponse.setMessage(String.format(
-                ResponseMessage.GET_SINGLE_SUCCESS, "payment", idOfPayment
+                ResponseMessage.GET_SINGLE_SUCCESS, Noun.PAYMENT, idOfPayment
         ));
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
