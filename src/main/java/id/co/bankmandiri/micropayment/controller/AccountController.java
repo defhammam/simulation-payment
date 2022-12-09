@@ -38,8 +38,15 @@ public class AccountController {
     }
 
     @PostMapping("/phone")
-    public AccountResponseDto addAccountByPhone(@RequestParam String customerPhone) {
-        return accountService.saveByPhone(customerPhone);
+    public ResponseEntity<CustomResponse<AccountResponseDto>> addAccountByPhone(@RequestParam String customerPhone) {
+        CustomResponse<AccountResponseDto> customResponse = new CustomResponse<>();
+        customResponse.setData(accountService.saveByPhone(customerPhone));
+        customResponse.setMessage(String.format(
+                ResponseMessage.ADD_SINGLE_SUCCESS, Noun.BANK
+        ));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(customResponse);
     }
 
     @PostMapping("/bulk")

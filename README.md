@@ -1,4 +1,7 @@
-- IP Address: 10.232.100.171
+# API Documentation
+
+
+- IP Address (LAN): 10.232.100.171
 - Port: 8080
 
 
@@ -8,35 +11,84 @@
 
  ```java
 class Account {
-    private String id;
+  private String id;
   
-    @Column(nullable=false)
-    private String customerPhone;
+  private String customerPhone;
   
-    @Column(nullable=false)
-    private Integer balance;
+  private Integer balance;
   
-    @Column(nullable=false)
-    private Boolean isDeleted;
+  private Boolean isDeleted;
 }
   ```
 
 - Payment:
 
 ```java
-public class Payment {
-    private String id;
-    private Long paymentDate;
-    private Integer amountPaid;
-    @ManyToOne
-    @JoinColumn(name="account_id")
-    private Account account;
+class Payment {
+  private String id;
+  private Long paymentDate;
+  private Integer amountPaid;
+  private Account account;
 }
 ```
 
-## API Documentation
 
 ### Account
+
+#### Create new Account
+
+Request
+
+- Endpoint : ```/banks```
+- Method : POST
+- Header :
+  - Content-Type: application/json
+  - Accept: application/json
+- Response :
+
+```json
+{
+  "customerPhone": "089696969696",
+  "balance": 969696
+}
+```
+
+- Response:
+
+```json
+{
+  "message": "A new bank has been added.",
+  "data": {
+    "id": "string",
+    "customerPhone": "089696969696",
+    "balance": 96969696,
+    "isDeleted": false
+  }
+}
+```
+
+#### Create new Account by Phone Number
+
+Request
+
+- Endpoint : ```/banks/phone```
+- Method : POST
+- Header :
+  - Content-Type: application/json
+  - Accept: application/json
+- Params:
+  - customerPhone: String
+- Response :
+
+```json
+{
+  "message": "A new bank has been added.",
+  "data": {
+    "customerPhone": "089696969696",
+    "balance": 1000000
+  }
+}
+```
 
 #### Get Account By ID
 
@@ -58,8 +110,6 @@ Request
   }
 }
 ```
-
-### Account
 
 #### Get All Accounts
 
