@@ -3,7 +3,7 @@
 
 - IP Address (LAN): 10.232.100.171
 - Port: 8080
-- Swagger endpoint: /swagger-ui/index.html
+- Swagger path: ```/swagger-ui/index.html```
 
 
 ## Entities
