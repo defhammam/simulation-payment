@@ -3,6 +3,7 @@ package id.co.bankmandiri.micropayment.controller;
 import id.co.bankmandiri.micropayment.constant.DefaultParameter;
 import id.co.bankmandiri.micropayment.constant.Noun;
 import id.co.bankmandiri.micropayment.constant.ResponseMessage;
+import id.co.bankmandiri.micropayment.dto.PaymentRequestDto;
 import id.co.bankmandiri.micropayment.dto.PaymentResponseDto;
 import id.co.bankmandiri.micropayment.dto.PaymentSearchDto;
 import id.co.bankmandiri.micropayment.entity.Payment;
@@ -56,10 +57,13 @@ public class PaymentController {
 
     @PostMapping("/debit")
     public ResponseEntity<CustomResponse<PaymentResponseDto>> addDebit(
-            @RequestParam String phone, @RequestParam Integer amount
-    ) {
+            @RequestBody PaymentRequestDto paymentRequestDto
+            ) {
         CustomResponse<PaymentResponseDto> customResponse = new CustomResponse<>();
-        customResponse.setData(paymentService.debit(phone, amount));
+        customResponse.setData(paymentService.debit(
+                paymentRequestDto.getPhoneNumber(),
+                paymentRequestDto.getAmountPaid()
+        ));
         customResponse.setMessage(String.format(
                 ResponseMessage.PAYMENT_CREATED, Noun.DEBIT
         ));

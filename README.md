@@ -150,9 +150,14 @@ Request :
 - Header :
     - Content-Type: application/json
     - Accept: application/json
-- Params :
-  - phone: String
-  - amount: Integer
+- Body :
+
+```json
+{
+  "amountPaid": 969696,
+  "phoneNumber": "089696969696"
+}
+```
 
 Response :
 
