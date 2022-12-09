@@ -1,6 +1,6 @@
 package id.co.bankmandiri.micropayment.service.implementation;
 
-import id.co.bankmandiri.micropayment.dto.PaymentResponseDto;
+import id.co.bankmandiri.micropayment.dto.DebitResponseDto;
 import id.co.bankmandiri.micropayment.dto.PaymentSearchDto;
 import id.co.bankmandiri.micropayment.entity.Account;
 import id.co.bankmandiri.micropayment.entity.Payment;
@@ -35,12 +35,12 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public PaymentResponseDto getById(String id) {
+    public DebitResponseDto getById(String id) {
         if (paymentRepository.findById(id).isEmpty()) {
             throw new NoSuchElementException();
         }
         Payment foundPayment = paymentRepository.findById(id).get();
-        return new PaymentResponseDto(
+        return new DebitResponseDto(
                 foundPayment.getId(),
                 foundPayment.getPaymentDate(),
                 foundPayment.getAmountPaid(),
@@ -50,7 +50,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     @Transactional
-    public PaymentResponseDto debit(String phoneOfCustomer, Integer amountToReduce) {
+    public DebitResponseDto debit(String phoneOfCustomer, Integer amountToReduce) {
         Payment payment = new Payment();
         Account foundAccount = accountRepository.findAccountByCustomerPhone(phoneOfCustomer);
         payment.setPaymentDate(System.currentTimeMillis());
@@ -58,7 +58,7 @@ public class PaymentServiceImpl implements PaymentService {
         payment.setAmountPaid(amountToReduce);
         payment.setAccount(foundAccount);
         Payment paymentWithId = paymentRepository.save(payment);
-        return new PaymentResponseDto(
+        return new DebitResponseDto(
                 paymentWithId.getId(),
                 paymentWithId.getPaymentDate(),
                 amountToReduce,

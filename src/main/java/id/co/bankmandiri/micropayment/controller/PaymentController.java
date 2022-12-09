@@ -4,7 +4,7 @@ import id.co.bankmandiri.micropayment.constant.DefaultParameter;
 import id.co.bankmandiri.micropayment.constant.Noun;
 import id.co.bankmandiri.micropayment.constant.ResponseMessage;
 import id.co.bankmandiri.micropayment.dto.PaymentRequestDto;
-import id.co.bankmandiri.micropayment.dto.PaymentResponseDto;
+import id.co.bankmandiri.micropayment.dto.DebitResponseDto;
 import id.co.bankmandiri.micropayment.dto.PaymentSearchDto;
 import id.co.bankmandiri.micropayment.entity.Payment;
 import id.co.bankmandiri.micropayment.service.PaymentService;
@@ -29,8 +29,8 @@ public class PaymentController {
     }
 
     @GetMapping("/{idOfPayment}")
-    public ResponseEntity<CustomResponse<PaymentResponseDto>> getPaymentById(@PathVariable String idOfPayment) {
-        CustomResponse<PaymentResponseDto> customResponse = new CustomResponse<>();
+    public ResponseEntity<CustomResponse<DebitResponseDto>> getPaymentById(@PathVariable String idOfPayment) {
+        CustomResponse<DebitResponseDto> customResponse = new CustomResponse<>();
         customResponse.setData(paymentService.getById(idOfPayment));
         customResponse.setMessage(String.format(
                 ResponseMessage.GET_SINGLE_SUCCESS, "payment", idOfPayment
@@ -44,8 +44,8 @@ public class PaymentController {
     public PageResponseWrapper<Payment> getPayments(
             @RequestParam(name="index", defaultValue=DefaultParameter.PAGE_INDEX) Integer pageIndex,
             @RequestParam(name="size", defaultValue=DefaultParameter.PAGE_SIZE) Integer pageSize,
-            @RequestParam(name="from", required=false) Long startDate,
-            @RequestParam(name="until", required=false) Long endDate
+            @RequestParam(name="from", defaultValue="") Long startDate,
+            @RequestParam(name="until", defaultValue="") Long endDate
     ) {
         Pageable pageRequest = PageRequest.of(pageIndex, pageSize);
         PaymentSearchDto paymentSearchDto = new PaymentSearchDto();
@@ -56,10 +56,10 @@ public class PaymentController {
     }
 
     @PostMapping("/debit")
-    public ResponseEntity<CustomResponse<PaymentResponseDto>> addDebit(
+    public ResponseEntity<CustomResponse<DebitResponseDto>> addDebit(
             @RequestBody PaymentRequestDto paymentRequestDto
             ) {
-        CustomResponse<PaymentResponseDto> customResponse = new CustomResponse<>();
+        CustomResponse<DebitResponseDto> customResponse = new CustomResponse<>();
         customResponse.setData(paymentService.debit(
                 paymentRequestDto.getPhoneNumber(),
                 paymentRequestDto.getAmountPaid()

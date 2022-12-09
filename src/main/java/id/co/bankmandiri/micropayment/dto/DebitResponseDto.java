@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class PaymentResponseDto {
+public class DebitResponseDto {
     private String idPayment;
     private Long paymentDate;
     private Integer amountPaid;

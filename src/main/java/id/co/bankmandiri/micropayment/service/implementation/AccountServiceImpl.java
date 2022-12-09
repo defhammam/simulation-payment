@@ -35,7 +35,7 @@ public class AccountServiceImpl implements AccountService {
         }
         Account accountToSave = new Account();
         accountToSave.setCustomerPhone(phone);
-        accountToSave.setBalance(100_000);
+        accountToSave.setBalance(1_000_000);
         accountRepository.save(this.validateDeletedStatus(accountToSave));
         return new AccountResponseDto(
                 accountToSave.getCustomerPhone(),
