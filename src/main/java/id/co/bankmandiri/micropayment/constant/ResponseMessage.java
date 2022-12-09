@@ -7,4 +7,5 @@ public class ResponseMessage {
     public static final String ADD_BULK_SUCCESS = "%d new %s have been added.";
     public static final String UPDATE_SINGLE_SUCCESS = "An existing %s has been updated.";
     public static final String DELETE_SINGLE_SUCCESS = "A previously existed %s has been removed.";
+    public static final String PAYMENT_CREATED = "Payment %s successful.";
 }

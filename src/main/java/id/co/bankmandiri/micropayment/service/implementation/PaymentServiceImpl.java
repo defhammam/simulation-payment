@@ -50,15 +50,20 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     @Transactional
-    public Integer debit(String phoneOfCustomer, Integer amountToReduce) {
+    public PaymentResponseDto debit(String phoneOfCustomer, Integer amountToReduce) {
         Payment payment = new Payment();
         Account foundAccount = accountRepository.findAccountByCustomerPhone(phoneOfCustomer);
         payment.setPaymentDate(System.currentTimeMillis());
         foundAccount.setBalance(foundAccount.getBalance() - amountToReduce);
         payment.setAmountPaid(amountToReduce);
         payment.setAccount(foundAccount);
-        paymentRepository.save(payment);
-        return accountRepository.save(foundAccount).getBalance();
+        Payment paymentWithId = paymentRepository.save(payment);
+        return new PaymentResponseDto(
+                paymentWithId.getId(),
+                paymentWithId.getPaymentDate(),
+                amountToReduce,
+                foundAccount.getCustomerPhone()
+        );
     }
 
     @Override
