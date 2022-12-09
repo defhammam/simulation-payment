@@ -13,11 +13,8 @@
  ```java
 class Account {
   private String id;
-  
   private String customerPhone;
-  
   private Integer balance;
-  
   private Boolean isDeleted;
 }
   ```
