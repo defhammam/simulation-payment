@@ -37,7 +37,7 @@ public class AccountController {
                 .body(customResponse);
     }
 
-    @PostMapping
+    @PostMapping("/phone")
     public AccountResponseDto addAccountByPhone(@RequestParam String customerPhone) {
         return accountService.saveByPhone(customerPhone);
     }
