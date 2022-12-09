@@ -72,7 +72,7 @@ Request
 
 ```json
 {
-  "message": "Data account found with ID 250b8bb1-7d55-458e-b30f-76c7307399bc.",
+  "message": "Data bank found with ID 250b8bb1-7d55-458e-b30f-76c7307399bc.",
   "data": [{
     "id": "string",
     "customerPhone": "089696969696",
@@ -106,7 +106,7 @@ Response :
 
 ```json
 {
-  "message": "An existing account has been updated.",
+  "message": "An existing bank has been updated.",
   "data": {
     "id": "string",
     "customerPhone": "089696969696",
@@ -129,7 +129,7 @@ Response :
 
 ```json
 {
-  "message": "An account with ID %s has been removed.",
+  "message": "A bank with ID %s has been removed.",
   "data": {
     "id": "string",
     "customerPhone": "089696969696",
@@ -156,8 +156,16 @@ Request :
 
 Response :
 
-```
-<new amount (Integer)>
+```json
+{
+  "message": "Payment debit successful.",
+  "data": {
+    "idPayment": "string",
+    "paymentDate": "165235320423",
+    "amountPaid": 969696,
+    "phoneNumber": "089696969696"
+  }
+}
 ```
 
 #### Get Payments Per Page
