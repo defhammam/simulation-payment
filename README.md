@@ -187,6 +187,61 @@ Response :
 }
 ```
 
+### Payment
+
+#### Get Payment By ID
+
+Request :
+
+- Endpoint : ```/payments/{id}```
+- Method : GET
+    - Accept: application/json
+- Response :
+
+```json
+{
+  "message": "Data payment found with ID %s.",
+  "data": {
+    "idPayment": "string",
+    "paymentDate": 165235320423,
+    "amountPaid": 9696,
+    "phoneNumber": "089696969696"
+  }
+}
+```
+
+#### Get Payments Per Page
+
+Request :
+
+- Endpoint : ```/payments/page```
+- Method : GET
+    - Accept: application/json
+- Params :
+  - from: Long
+  - until: Long
+- Response :
+
+```json
+{
+  "data": [{
+      "id": "string",
+      "paymentDate": 165235320423,
+      "amountPaid": 9696,
+      "account": {
+        "id": "string",
+        "customerPhone": "089696969696",
+        "balance": 960000,
+        "isDeleted": false
+      }
+  }],
+  "totalElement": 1,
+  "totalPage": 1,
+  "pageIndex": 0,
+  "pageSize": 5
+}
+```
+
 ### Transaction
 
 #### Debit
@@ -202,7 +257,7 @@ Request :
 
 ```json
 {
-  "amountPaid": 969696,
+  "amountPaid": 9696,
   "phoneNumber": "089696969696"
 }
 ```
@@ -215,35 +270,8 @@ Response :
   "data": {
     "idPayment": "string",
     "paymentDate": 165235320423,
-    "amountPaid": 969696,
+    "amountPaid": 9696,
     "phoneNumber": "089696969696"
   }
-}
-```
-
-#### Get Payments Per Page
-
-Request :
-
-- Endpoint : ```/payments/page```
-- Method : GET
-    - Accept: application/json
-- Params :
-  - from: Long
-  - to: Long
-- Response :
-
-```json
-{
-  "data": [{
-      "id": "string",
-      "customerPhone": "089696969696",
-      "balance": 969696,
-      "isDeleted": false
-  }],
-  "totalElement": 1,
-  "totalPage": 1,
-  "pageIndex": 0,
-  "pageSize": 5
 }
 ```

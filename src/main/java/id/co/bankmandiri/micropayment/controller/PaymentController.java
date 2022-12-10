@@ -5,7 +5,7 @@ import id.co.bankmandiri.micropayment.constant.Noun;
 import id.co.bankmandiri.micropayment.constant.ResponseMessage;
 import id.co.bankmandiri.micropayment.constant.UrlPath;
 import id.co.bankmandiri.micropayment.dto.PaymentRequestDto;
-import id.co.bankmandiri.micropayment.dto.DebitResponseDto;
+import id.co.bankmandiri.micropayment.dto.PaymentResponseDto;
 import id.co.bankmandiri.micropayment.dto.PaymentSearchDto;
 import id.co.bankmandiri.micropayment.entity.Payment;
 import id.co.bankmandiri.micropayment.service.PaymentService;
@@ -30,8 +30,8 @@ public class PaymentController {
     }
 
     @GetMapping("/{idOfPayment}")
-    public ResponseEntity<CustomResponse<DebitResponseDto>> getPaymentById(@PathVariable String idOfPayment) {
-        CustomResponse<DebitResponseDto> customResponse = new CustomResponse<>();
+    public ResponseEntity<CustomResponse<PaymentResponseDto>> getPaymentById(@PathVariable String idOfPayment) {
+        CustomResponse<PaymentResponseDto> customResponse = new CustomResponse<>();
         customResponse.setData(paymentService.getById(idOfPayment));
         customResponse.setMessage(String.format(
                 ResponseMessage.GET_SINGLE_SUCCESS, Noun.PAYMENT, idOfPayment
@@ -57,10 +57,10 @@ public class PaymentController {
     }
 
     @PostMapping("/debit")
-    public ResponseEntity<CustomResponse<DebitResponseDto>> addDebit(
+    public ResponseEntity<CustomResponse<PaymentResponseDto>> addDebit(
             @RequestBody PaymentRequestDto paymentRequestDto
             ) {
-        CustomResponse<DebitResponseDto> customResponse = new CustomResponse<>();
+        CustomResponse<PaymentResponseDto> customResponse = new CustomResponse<>();
         customResponse.setData(paymentService.debit(
                 paymentRequestDto.getPhoneNumber(),
                 paymentRequestDto.getAmountPaid()
@@ -75,6 +75,7 @@ public class PaymentController {
 
     @PostMapping("/top-up")
     public Integer topUpByPhoneNumber(@RequestParam String phone, @RequestParam Integer amount) {
+        // todo: wrap return value of service method call in ResponseEntity
         return paymentService.topUp(phone, amount);
     }
 }
