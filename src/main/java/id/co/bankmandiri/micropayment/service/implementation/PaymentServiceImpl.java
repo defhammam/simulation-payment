@@ -1,5 +1,6 @@
 package id.co.bankmandiri.micropayment.service.implementation;
 
+import id.co.bankmandiri.micropayment.constant.ResponseMessage;
 import id.co.bankmandiri.micropayment.dto.DebitResponseDto;
 import id.co.bankmandiri.micropayment.dto.PaymentSearchDto;
 import id.co.bankmandiri.micropayment.entity.Account;
@@ -8,6 +9,7 @@ import id.co.bankmandiri.micropayment.repository.AccountRepository;
 import id.co.bankmandiri.micropayment.repository.PaymentRepository;
 import id.co.bankmandiri.micropayment.service.PaymentService;
 import id.co.bankmandiri.micropayment.specification.PaymentSpecification;
+import id.co.bankmandiri.micropayment.utils.exception.InsufficientBalanceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -54,7 +56,7 @@ public class PaymentServiceImpl implements PaymentService {
         Payment payment = new Payment();
         Account foundAccount = accountRepository.findAccountByCustomerPhone(phoneOfCustomer);
         payment.setPaymentDate(System.currentTimeMillis());
-        foundAccount.setBalance(foundAccount.getBalance() - amountToReduce);
+        foundAccount.setBalance(this.validateBalance(foundAccount, amountToReduce));
         payment.setAmountPaid(amountToReduce);
         payment.setAccount(foundAccount);
         Payment paymentWithId = paymentRepository.save(payment);
@@ -72,5 +74,12 @@ public class PaymentServiceImpl implements PaymentService {
         Account foundAccount = accountRepository.findAccountByCustomerPhone(phoneOfCustomer);
         foundAccount.setBalance(foundAccount.getBalance() + amountToAdd);
         return accountRepository.save(foundAccount).getBalance();
+    }
+
+    private Integer validateBalance(Account account, Integer debitAmount) {
+        if (account.getBalance() < debitAmount) {
+            throw new InsufficientBalanceException(ResponseMessage.NOT_ENOUGH_BALANCE_ERROR);
+        }
+        return account.getBalance() - debitAmount;
     }
 }
