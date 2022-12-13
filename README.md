@@ -42,7 +42,7 @@ Request
 - Header :
   - Content-Type: application/json
   - Accept: application/json
-- Response :
+- Body:
 
 ```json
 {
@@ -75,7 +75,7 @@ Request
   - Content-Type: application/json
   - Accept: application/json
 - Params:
-  - customerPhone: String
+  - number: String
 - Response :
 
 ```json
@@ -120,7 +120,7 @@ Request
 
 ```json
 {
-  "message": "Data bank found with ID 250b8bb1-7d55-458e-b30f-76c7307399bc.",
+  "message": "All banks found.",
   "data": [{
     "id": "string",
     "customerPhone": "089696969696",

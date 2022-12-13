@@ -38,7 +38,9 @@ public class AccountController {
     }
 
     @PostMapping("/phone")
-    public ResponseEntity<CustomResponse<AccountResponseDto>> addAccountByPhone(@RequestParam String customerPhone) {
+    public ResponseEntity<CustomResponse<AccountResponseDto>> addAccountByPhone(
+            @RequestParam(name="number") String customerPhone
+    ) {
         CustomResponse<AccountResponseDto> customResponse = new CustomResponse<>();
         customResponse.setData(accountService.saveByPhone(customerPhone));
         customResponse.setMessage(String.format(
