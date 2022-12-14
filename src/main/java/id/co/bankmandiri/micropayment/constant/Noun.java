@@ -5,4 +5,5 @@ public class Noun {
     public static final String BANKS = "banks";
     public static final String DEBIT = "debit";
     public static final String PAYMENT = "payment";
+    public static final String BALANCE = "balance";
 }

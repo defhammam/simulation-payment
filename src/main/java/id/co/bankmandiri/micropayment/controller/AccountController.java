@@ -1,5 +1,6 @@
 package id.co.bankmandiri.micropayment.controller;
 
+import id.co.bankmandiri.micropayment.constant.DefaultParameter;
 import id.co.bankmandiri.micropayment.constant.Noun;
 import id.co.bankmandiri.micropayment.constant.ResponseMessage;
 import id.co.bankmandiri.micropayment.constant.UrlPath;
@@ -7,7 +8,12 @@ import id.co.bankmandiri.micropayment.dto.AccountResponseDto;
 import id.co.bankmandiri.micropayment.entity.Account;
 import id.co.bankmandiri.micropayment.service.AccountService;
 import id.co.bankmandiri.micropayment.utils.CustomResponse;
+import id.co.bankmandiri.micropayment.utils.PageResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -64,15 +70,15 @@ public class AccountController {
     }
 
     @GetMapping
-    public ResponseEntity<CustomResponse<List<Account>>> getAllAccounts() {
-        CustomResponse<List<Account>> customResponse = new CustomResponse<>();
-        customResponse.setData(accountService.getAll());
-        customResponse.setMessage(String.format(
-                ResponseMessage.GET_BULK_SUCCESS, Noun.BANKS
-        ));
-        return ResponseEntity.status(HttpStatus.OK)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(customResponse);
+    public PageResponseWrapper<Account> getAllAccountsWithPagination(
+            @RequestParam(name="index", defaultValue=DefaultParameter.PAGE_INDEX) Integer pageIndex,
+            @RequestParam(name="size", defaultValue=DefaultParameter.PAGE_SIZE) Integer pageSize,
+            @RequestParam(name="sortBy", defaultValue=Noun.BALANCE) String sortCriteria,
+            @RequestParam(name="direction", defaultValue=DefaultParameter.SORT_DIRECTION) String directionOfSort
+    ) {
+        Sort sortingTechnique = Sort.by(Sort.Direction.fromString(directionOfSort), sortCriteria);
+        Pageable pageRequest = PageRequest.of(pageIndex, pageSize, sortingTechnique);
+        return new PageResponseWrapper<>(accountService.getAllPerPage(pageRequest));
     }
 
     @GetMapping("/{idOfAccount}")

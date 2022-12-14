@@ -7,6 +7,8 @@ import id.co.bankmandiri.micropayment.repository.AccountRepository;
 import id.co.bankmandiri.micropayment.service.AccountService;
 import id.co.bankmandiri.micropayment.utils.exception.AccountExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -51,8 +53,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<Account> getAll() {
-        return accountRepository.findAll();
+    public Page<Account> getAllPerPage(Pageable pageable) {
+        return accountRepository.findAll(pageable);
     }
 
     @Override

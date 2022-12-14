@@ -69,7 +69,7 @@ public class AccountServiceImplTest {
         }
     }
 
-    @Test
+    /*@Test
     void itShouldGetAllAccounts() {
         accountsMock = new ArrayList<>();
         accountsMock.add(new Account());
@@ -82,7 +82,8 @@ public class AccountServiceImplTest {
         } catch (Exception e) {
             throw new RuntimeException();
         }
-    }
+    }*/
+
     @Test
     void itShouldGetAccountById() {
         when(accountRepository.findById(anyString())).thenReturn(Optional.of(mockedAccount));

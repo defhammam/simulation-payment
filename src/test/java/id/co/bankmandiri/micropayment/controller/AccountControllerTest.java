@@ -111,7 +111,7 @@ public class AccountControllerTest {
                 .andExpect(content().json(objectMapper.writeValueAsString(customResponse)));
     }
 
-    @Test
+    /*@Test
     void itShouldGetAllAccountsAndReturnResponseOfAccountsIncludingStatusOk() throws Exception {
         accountsMock = new ArrayList<>();
         accountsMock.add(new Account());
@@ -124,7 +124,7 @@ public class AccountControllerTest {
         mockMvc.perform(get(UrlPath.MST_BANK))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(customResponse)));
-    }
+    }*/
 
     @Test
     void itShouldUpdateAccountAndReturnResponseOfAccountAndStatusOk() throws Exception {
