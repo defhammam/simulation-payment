@@ -5,6 +5,7 @@ import id.co.bankmandiri.micropayment.constant.Noun;
 import id.co.bankmandiri.micropayment.constant.ResponseMessage;
 import id.co.bankmandiri.micropayment.constant.UrlPath;
 import id.co.bankmandiri.micropayment.dto.AccountResponseDto;
+import id.co.bankmandiri.micropayment.dto.PhoneNumberDto;
 import id.co.bankmandiri.micropayment.entity.Account;
 import id.co.bankmandiri.micropayment.service.AccountService;
 import id.co.bankmandiri.micropayment.utils.CustomResponse;
@@ -45,10 +46,10 @@ public class AccountController {
 
     @PostMapping("/phone")
     public ResponseEntity<CustomResponse<AccountResponseDto>> addAccountByPhone(
-            @RequestParam(name="number") String customerPhone
+            @RequestBody PhoneNumberDto phoneNumberDto
     ) {
         CustomResponse<AccountResponseDto> customResponse = new CustomResponse<>();
-        customResponse.setData(accountService.saveByPhone(customerPhone));
+        customResponse.setData(accountService.saveByPhone(phoneNumberDto.getPhone()));
         customResponse.setMessage(String.format(
                 ResponseMessage.ADD_SINGLE_SUCCESS, Noun.BANK
         ));
@@ -71,7 +72,7 @@ public class AccountController {
 
     @GetMapping
     public PageResponseWrapper<Account> getAllAccountsWithPagination(
-            @RequestParam(name="index", defaultValue=DefaultParameter.PAGE_INDEX) Integer pageIndex,
+            @RequestParam(name="page", defaultValue=DefaultParameter.PAGE_INDEX) Integer pageIndex,
             @RequestParam(name="size", defaultValue=DefaultParameter.PAGE_SIZE) Integer pageSize,
             @RequestParam(name="sortBy", defaultValue=Noun.BALANCE) String sortCriteria,
             @RequestParam(name="direction", defaultValue=DefaultParameter.SORT_DIRECTION) String directionOfSort

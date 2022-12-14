@@ -11,6 +11,7 @@ import java.util.List;
 
 public class AccountSpecification {
     public static Specification<Account> getSpecification(AccountSearchDto accountSearchDto) {
+        // To search for account based on amount of balance
         return ((root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (accountSearchDto.getBalanceUpperRange() != null && accountSearchDto.getBalanceLowerRange() != null) {
